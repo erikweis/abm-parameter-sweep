@@ -46,3 +46,8 @@ e = Experiment(
 
 e.run_all_trials()
 ```
+
+## Installation
+
+To install, clone this repository, navigate to the folder abm-parameter-sweep 
+in your terminal and run `pip install -e .`.
