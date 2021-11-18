@@ -44,5 +44,5 @@ e = Experiment(
     c = [0.1,0.2,0.3,0.4]
 )
 
-e.save_trials_index()
+e.run_all_trials()
 ```
