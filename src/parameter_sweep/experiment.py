@@ -14,6 +14,7 @@ class Experiment:
         simulation_class: Simulation,
         folder_name = None,
         random_proportion = 1,
+        iterations_per_grid_point = 1, 
         **kwargs):
 
         #validate simulation class
@@ -42,7 +43,7 @@ class Experiment:
         self.save_trials_index()
 
 
-    def trials_setup(self,kwargs,random_proportion):
+    def trials_setup(self,kwargs,random_proportion,iterations_per_grid_point):
         
         params = list(kwargs.keys())
         list_of_values = list(kwargs.values())
@@ -55,8 +56,9 @@ class Experiment:
 
         #select trials
         num_trials = int(random_proportion*len(self.possible_trials))
-        self.trials = random.sample(self.possible_trials,num_trials)
-
+        trials = random.sample(self.possible_trials,num_trials)
+        self.trials = [t for _ in range(iterations_per_grid_point) for t in trials]
+        
 
     def _run_trial(self, trial_dir, trial_params):
 
