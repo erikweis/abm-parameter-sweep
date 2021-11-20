@@ -58,22 +58,31 @@ class Experiment:
         self.trials = random.sample(self.possible_trials,num_trials)
 
 
-    def run_all_trials(self):
+    def _run_trial(self, trial_dir, trial_params):
+
+        sim = self.simulation_class(dirname=trial_dir,**trial_params)
+        sim.run_simulation()
+        sim.on_finish()
+
+    def run_all_trials(self,debug = False):
 
         for i,trial_params in enumerate(self.trials):
             trial_dir = os.path.join(self.dirname,f"trial_{i}")
             os.mkdir(trial_dir)
 
-            try:
-                sim = self.simulation_class(dirname=trial_dir,**trial_params)
-                sim.run_simulation()
-                sim.on_finish()
-            except:
-                print("Error Running Simulation with the following params:")
-                for k,v in trial_params.items():
-                    print(f"{k}: {v}")
+            if debug:
+                self._run_trial(trial_dir,trial_params)
+            else:
+                try:
+                    self._run_trial(trial_dir,trial_params)
+                except Exception as exception:
+                    if debug:
+                        print(exception)
+                    print("Error Running Simulation with the following params:")
+                    for k,v in trial_params.items():
+                        print(f"{k}: {v}")
 
-            trial_params['id']=i
+                trial_params['id']=i
 
 
     def save_trials_index(self):
