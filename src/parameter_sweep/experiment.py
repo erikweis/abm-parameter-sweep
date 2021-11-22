@@ -39,7 +39,7 @@ class Experiment:
                 shutil.rmtree(self.dirname)
                 os.mkdir(self.dirname)
 
-        self.trials_setup(kwargs,random_proportion)
+        self.trials_setup(kwargs,random_proportion,iterations_per_grid_point)
         self.save_trials_index()
 
 
