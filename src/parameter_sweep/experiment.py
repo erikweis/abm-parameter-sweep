@@ -13,6 +13,7 @@ class Experiment:
     def __init__(self,
         simulation_class: Simulation,
         folder_name = None,
+        root_dir = None,
         random_proportion = 1,
         iterations_per_grid_point = 1, 
         **kwargs):
@@ -22,7 +23,7 @@ class Experiment:
             raise TypeError("The input simulation_class should extend `Simulation`")
         self.simulation_class = simulation_class
 
-        #create folder if not provided
+        #create foldername if not provided
         i = 0
         if not folder_name:
             while os.path.isdir(f'experiment_{i}'):
@@ -30,7 +31,17 @@ class Experiment:
             folder_name = f'experiment_{i}'
 
         #establish directory
-        self.dirname = os.path.join(os.getcwd(),folder_name)
+        if not root_dir:
+            self.dirname = os.path.join(os.getcwd(),folder_name)
+        else:
+            #ensure the root directory exists
+            try:
+                assert os.path.isdir(root_dir)
+            except:
+                raise FileExistsError("The root directory provided does not exist.")
+            #create base dirpath
+            self.dirname = os.path.join(root_dir,folder_name)
+
         if not os.path.isdir(self.dirname):
             os.mkdir(self.dirname)
         else:
